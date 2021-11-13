@@ -1,4 +1,4 @@
-Project Old Rod - KoiVM Devirtualisation tool
+Project Old Rod - KoiVM Devirtualisation Tool
 =============================================
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  [![Master branch build status](https://img.shields.io/appveyor/ci/Washi1337/OldRod/master.svg)](https://ci.appveyor.com/project/Washi1337/OldRod/branch/master)
 
