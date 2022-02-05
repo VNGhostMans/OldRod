@@ -274,6 +274,10 @@ namespace OldRod.Core.Disassembly.Inference
                 var filterState = next.Copy();
                 filterState.Key = 0;
                 filterState.IP = frame.FilterAddress;
+                filterState.IgnoreExitKey = true;
+                filterState.Stack.Push(new SymbolicValue(
+                    new ILInstruction(PushExceptionOffset, ILOpCodes.__PUSH_EXCEPTION, frame.CatchType),
+                    VMType.Object));
                 result.Add(filterState);
             }
 

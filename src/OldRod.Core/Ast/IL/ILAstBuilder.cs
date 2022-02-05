@@ -43,6 +43,12 @@ namespace OldRod.Core.Ast.IL
             get;
             set;
         } = EmptyLogger.Instance;
+
+        public int? MaxSimplificationPasses
+        {
+            get;
+            set;
+        }
         
         public ILCompilationUnit BuildAst(
             ControlFlowGraph graph, 
@@ -258,7 +264,9 @@ namespace OldRod.Core.Ast.IL
 
             returnExpr.Arguments.Clear();
 
-            if (result.FrameLayout.ReturnsValue && !instruction.ProgramState.IgnoreExitKey)
+            var ehStack = instruction.ProgramState.EHStack;
+            if (result.FrameLayout.ReturnsValue && !instruction.ProgramState.IgnoreExitKey
+                || ehStack.Count > 0 && ehStack.Peek().Type == EHType.FILTER)
             {
                 var registerVar = result.GetOrCreateVariable(nameof(VMRegisters.R0));
                 returnExpr.Arguments.Add(new ILVariableExpression(registerVar));
@@ -363,7 +371,7 @@ namespace OldRod.Core.Ast.IL
             {
                 new StackFrameTransform(),
                 new SsaTransform(),
-                new TransformLoop("Expression Simplification", 5, new IChangeAwareILAstTransform[]
+                new TransformLoop("Expression Simplification", MaxSimplificationPasses, new IChangeAwareILAstTransform[]
                 {
                     new VariableInliner(),
                     new PushMinimizer(), 

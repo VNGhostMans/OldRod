@@ -262,7 +262,7 @@ namespace OldRod
                 RenameSymbols = result.Flags.Contains(CommandLineSwitches.RenameConstants),
                 RuntimeFile = result.GetOptionOrDefault(CommandLineSwitches.RuntimeLibFileName),
                 NoExportMapping = result.Flags.Contains(CommandLineSwitches.NoExportMapping),
-                IgnoreInvalidMD = result.Flags.Contains(CommandLineSwitches.IgnoreInvalidMD)
+                IgnoreInvalidMD = result.Flags.Contains(CommandLineSwitches.IgnoreInvalidMD),
             };
 
             if (result.Flags.Contains(CommandLineSwitches.ForceEmbeddedRuntimeLib))
@@ -340,11 +340,30 @@ namespace OldRod
                 options.SelectedMethods = selection;
             }
 
+            if (result.Options.ContainsKey(CommandLineSwitches.RunMethod1Signature))
+            {
+                options.Run1ExpectedTypes.Clear();
+                foreach (string typeName in result.GetOptionOrDefault(CommandLineSwitches.RunMethod1Signature).Split(','))
+                    options.Run1ExpectedTypes.Add(typeName);
+            }
+
+            if (result.Options.ContainsKey(CommandLineSwitches.RunMethod2Signature))
+            {
+                options.Run2ExpectedTypes.Clear();
+                foreach (string typeName in result.GetOptionOrDefault(CommandLineSwitches.RunMethod2Signature).Split(','))
+                    options.Run2ExpectedTypes.Add(typeName);
+            }
+
             if (result.Options.TryGetValue(CommandLineSwitches.ConfigurationFile, out string configFile))
             {
                 configFile = configFile.Replace("\"", "");
                 var jsonConfig = ConstantsConfiguration.FromFile(configFile);
                 options.Constants = jsonConfig.CreateVmConstants();
+            }
+
+            if (result.Options.TryGetValue(CommandLineSwitches.MaxSimplificationPasses, out string maxPasses))
+            {
+                options.MaxSimplificationPasses = int.Parse(maxPasses);
             }
             
             return options;

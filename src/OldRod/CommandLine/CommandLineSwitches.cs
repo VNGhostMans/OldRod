@@ -142,6 +142,21 @@ namespace OldRod.CommandLine
             "-config"
         }, "Use opcode configuration from the provided JSON file.", null);
         
+        public static readonly CommandLineSwitch MaxSimplificationPasses = new CommandLineSwitch(new[]
+        {
+            "-max-opt-passes"
+        }, "Specify a maximum amount of iterations the logic simplifier can use for optimizing expressions.", null);
+        
+        public static readonly CommandLineSwitch RunMethod1Signature = new CommandLineSwitch(new[]
+        {
+            "r1", "-run-sig-1"
+        }, "Specify a comma-separated list of parameter type names of the first run method.", null);
+        
+        public static readonly CommandLineSwitch RunMethod2Signature = new CommandLineSwitch(new[]
+        {
+            "r2", "-run-sig-2"
+        }, "Specify a comma-separated list of parameter type names of the second run method.", null);
+        
         public static readonly CommandLineSwitch SalvageData = new CommandLineSwitch(new[]
         {
             "-salvage"
